@@ -158,6 +158,22 @@ push 到 `main` 分支之后，GitHub Actions 会自动：
 
 ---
 
+## 5.5 只是想调配色/字体，不换主题
+
+现在这套"方格纸"视觉（浅蓝网格背景、直角边框、Anybody + IBM Plex 字体）不是
+改主题本身，而是叠在 PaperMod 默认样式上面的一层覆盖，全在这两个文件里：
+
+- `assets/css/extended/custom.css` —— 配色变量、字体、方格纸背景、各种圆角/
+  等宽大写细节，改这个文件里最上面的 `:root` 变量最省事
+- `layouts/_partials/extend_head.html` —— 引入 Google Fonts 的地方，换字体
+  就改这里的 `<link>`
+
+这两个文件都在仓库根目录，不在 `themes/PaperMod/` 里面，所以主题以后升级
+（重新复制一遍新版本的主题文件）也不会把这层样式覆盖掉。改完照常
+`hugo server -D` 本地看一眼、`git push` 就行。
+
+---
+
 ## 目录结构速查
 
 ```
