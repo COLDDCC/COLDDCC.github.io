@@ -62,7 +62,6 @@ mkdir -p content/posts/我的新文章标题
 ```
 
 正文里用相对路径引用同目录下的图片即可，例如 `![说明文字](my-image.png)`。
-具体例子可以参考 `content/posts/hello-code-and-image/`。
 
 ---
 
