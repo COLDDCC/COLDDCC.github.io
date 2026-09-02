@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" aria-label="发布流程示意图">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1f6feb"/>
+      <stop offset="100%" stop-color="#8250df"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+
+  <g font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="26" fill="#ffffff" text-anchor="middle">
+    <g>
+      <rect x="30"  y="160" width="150" height="80" rx="12" fill="rgba(255,255,255,0.15)" stroke="#ffffff" stroke-width="2"/>
+      <text x="105" y="207">写文章</text>
+    </g>
+    <g>
+      <rect x="230" y="160" width="150" height="80" rx="12" fill="rgba(255,255,255,0.15)" stroke="#ffffff" stroke-width="2"/>
+      <text x="305" y="207">git push</text>
+    </g>
+    <g>
+      <rect x="430" y="160" width="150" height="80" rx="12" fill="rgba(255,255,255,0.15)" stroke="#ffffff" stroke-width="2"/>
+      <text x="505" y="199">GitHub</text>
+      <text x="505" y="228">Actions 构建</text>
+    </g>
+    <g>
+      <rect x="630" y="160" width="150" height="80" rx="12" fill="rgba(255,255,255,0.15)" stroke="#ffffff" stroke-width="2"/>
+      <text x="705" y="199">Pages</text>
+      <text x="705" y="228">自动上线</text>
+    </g>
+
+    <path d="M180 200 H228" stroke="#ffffff" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M380 200 H428" stroke="#ffffff" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M580 200 H628" stroke="#ffffff" stroke-width="3" marker-end="url(#arrow)"/>
+  </g>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#ffffff"/>
+    </marker>
+  </defs>
+
+  <text x="400" y="90" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="34" fill="#ffffff" text-anchor="middle" font-weight="bold">
+    往 content/posts/ 扔一个 .md
+  </text>
+  <text x="400" y="330" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="20" fill="rgba(255,255,255,0.85)" text-anchor="middle">
+    push 之后约 30 秒，新文章自动出现在线上
+  </text>
+</svg>
