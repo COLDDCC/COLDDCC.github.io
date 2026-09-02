@@ -1,0 +1,132 @@
+# =============================================================================
+# Hugo 站点配置
+# 注意：baseURL 故意留空/占位，不要在这里写死域名！
+# 真正的 baseURL 由 GitHub Actions 构建时通过
+# `hugo --baseURL "${{ steps.pages.outputs.base_url }}/"` 注入，
+# 详见 .github/workflows/deploy.yml。硬编码会导致 CSS/链接在 Pages 上 404。
+# =============================================================================
+baseURL = "https://example.org/"
+locale = "zh-cn"
+defaultContentLanguage = "zh"
+hasCJKLanguage = true
+title = "我的博客"          # TODO: 换成你自己的站点标题
+theme = "PaperMod"
+
+enableRobotsTXT = true
+enableEmoji = true
+pygmentsUseClasses = true
+
+paginate = 10
+
+[minify]
+  disableXML = true
+  minifyOutput = true
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+[params]
+  env = "production"
+  description = "TODO: 在这里填写你站点的简介（会出现在首页和搜索引擎摘要里）"   # TODO
+  keywords = ["博客", "技术", "TODO"]                                          # TODO
+  author = "TODO: 你的名字"                                                    # TODO
+  defaultTheme = "auto"     # auto | light | dark
+  disableThemeToggle = false
+  ShowShareButtons = true
+  ShowReadingTime = true
+  ShowWordCount = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowRssButtonInSectionTermList = true
+  ShowAllPagesInArchive = true
+  ShowToc = true
+  TocOpen = false
+  comments = false
+  hidemeta = false
+  hideSummary = false
+  showtoc = false
+  UseHugoToc = true
+  disableSpecial1stPost = false
+  disableScrollToTop = false
+  ShowFullTextinRSS = true
+
+  [params.homeInfoParams]
+    Title = "你好 👋"                                             # TODO
+    Content = "这里是我的个人技术博客，记录学习和折腾过程中的一些笔记。"   # TODO
+
+  [params.assets]
+    disableFingerprinting = false
+    favicon = "/favicon.ico"
+
+  # 社交链接占位，用户后面自己填。没有想放的可以直接删掉对应行。
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/TODO"          # TODO
+
+  [[params.socialIcons]]
+    name = "rss"
+    url = "index.xml"
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+    codeFences = true
+    guessSyntax = true
+    lineNos = false
+    style = "github"
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4
+
+[menu]
+  [[menu.main]]
+    identifier = "posts"
+    name = "文章"
+    url = "/posts/"
+    weight = 10
+  [[menu.main]]
+    identifier = "tags"
+    name = "标签"
+    url = "/tags/"
+    weight = 20
+  [[menu.main]]
+    identifier = "archives"
+    name = "归档"
+    url = "/archives/"
+    weight = 30
+  [[menu.main]]
+    identifier = "search"
+    name = "搜索"
+    url = "/search/"
+    weight = 40
+
+[privacy]
+  [privacy.vimeo]
+    disabled = false
+    simple = true
+  [privacy.twitter]
+    disabled = false
+    enableDNT = true
+    simple = true
+  [privacy.instagram]
+    disabled = false
+    simple = true
+  [privacy.youtube]
+    disabled = false
+    privacyEnhanced = true
+
+[services]
+  [services.instagram]
+    disableInlineCSS = true
+  [services.twitter]
+    disableInlineCSS = true

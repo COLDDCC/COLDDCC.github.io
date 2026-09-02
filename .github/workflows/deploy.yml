@@ -1,0 +1,79 @@
+name: Deploy Hugo site to Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只允许一个部署跑完，避免并发部署互相覆盖。
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  # Hugo 版本写死，不用 latest：主题和 Hugo 版本经常打架，
+  # 锁定版本号才能保证构建不会在某天突然莫名其妙失败。
+  # 以后要升级 Hugo，改这一行，本地用同一版本测试通过后再提交。
+  HUGO_VERSION: 0.165.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Hugo CLI (Extended)
+        run: |
+          curl -sSL \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb" \
+            -o "${{ runner.temp }}/hugo.deb"
+          sudo dpkg -i "${{ runner.temp }}/hugo.deb"
+          hugo version
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # 主题是直接提交进 themes/ 目录的普通文件，不是 git submodule，
+          # 这里的 submodules 设置留着只是为了保险（万一以后误加了 submodule）。
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build with Hugo
+        env:
+          HUGO_ENVIRONMENT: production
+          HUGO_ENV: production
+        # baseURL 不写死在配置文件里，而是用 configure-pages 输出的
+        # base_url 在这里注入。硬编码 baseURL 会导致部署到
+        # https://<用户名>.github.io 之后 CSS 和链接全部 404。
+        run: |
+          hugo \
+            --gc \
+            --minify \
+            --baseURL "${{ steps.pages.outputs.base_url }}/"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
