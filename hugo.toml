@@ -37,8 +37,9 @@ paginate = 10
   description = "TODO: 在这里填写你站点的简介（会出现在首页和搜索引擎摘要里）"   # TODO
   keywords = ["博客", "技术", "TODO"]                                          # TODO
   author = "TODO: 你的名字"                                                    # TODO
-  defaultTheme = "auto"     # auto | light | dark
-  disableThemeToggle = false
+  # 强制浅色：整个配色方案是照方格纸/工程图纸的风格调的，没有做深色版本
+  defaultTheme = "light"
+  disableThemeToggle = true
   ShowShareButtons = true
   ShowReadingTime = true
   ShowWordCount = true
