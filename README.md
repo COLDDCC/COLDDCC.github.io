@@ -1,10 +1,10 @@
-# COLD.github.io
+# COLDDCC.github.io
 
 个人技术博客。静态生成器用的是 [Hugo Extended](https://gohugo.io/)，主题是
 [PaperMod](https://github.com/adityatelange/hugo-PaperMod)，通过 GitHub Actions
 自动构建并部署到 GitHub Pages。
 
-线上地址：`https://COLD.github.io`
+线上地址：`https://COLDDCC.github.io`
 
 > 这份 README 是写给"以后忘光了怎么用"的自己看的操作手册，照着抄命令就行。
 
@@ -113,7 +113,7 @@ push 到 `main` 分支之后，GitHub Actions 会自动：
 1. 用写死版本号的 Hugo Extended 构建站点
 2. 把构建产物部署到 GitHub Pages
 
-大约 30 秒到 1 分钟左右，`https://COLD.github.io` 上就能看到新文章。可以在
+大约 30 秒到 1 分钟左右，`https://COLDDCC.github.io` 上就能看到新文章。可以在
 仓库的 **Actions** 标签页看构建进度，绿色对勾就是成功。
 
 ---
