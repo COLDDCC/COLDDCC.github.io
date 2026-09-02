@@ -38,10 +38,14 @@
 body {
   font-family: var(--font-body);
   background-color: var(--theme);
+  /* 双层网格：5mm 一条细线，每 5 格（25mm）加一条粗一点的"整格"线，
+     跟 printable-graph 卖的方格纸产品（5mm/1cm 方格纸）呼应一下 */
   background-image:
-    linear-gradient(to right, rgba(74, 127, 181, .1) .6px, transparent .6px),
-    linear-gradient(to bottom, rgba(74, 127, 181, .1) .6px, transparent .6px);
-  background-size: 5mm 5mm;
+    linear-gradient(to right, rgba(74, 127, 181, .32) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(74, 127, 181, .32) 1px, transparent 1px),
+    linear-gradient(to right, rgba(74, 127, 181, .16) .6px, transparent .6px),
+    linear-gradient(to bottom, rgba(74, 127, 181, .16) .6px, transparent .6px);
+  background-size: 25mm 25mm, 25mm 25mm, 5mm 5mm, 5mm 5mm;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -124,7 +128,7 @@ code, pre, .chroma,
 /* ---------- 文章列表卡片 ---------- */
 
 .post-entry {
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--primary);
   transition: transform .2s ease, border-color .2s ease;
 }
 
@@ -133,7 +137,35 @@ code, pre, .chroma,
   border-color: var(--accent-blue);
 }
 
-.entry-hint-parent h2 { font-weight: 700; }
+/* entry-hint-parent 这个 class 直接打在 h2 上（display:flex，用来给"编辑/草稿"
+   提示腾位置），默认只有标题一个 flex item，justify-content:space-between
+   没有可见效果——但下面加了个 ::before 方块记号之后就变成两个 item 了，
+   要显式收拢到左边，不然标题会被挤到最右边 */
+h2.entry-hint-parent {
+  font-weight: 700;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.entry-cover img { border: 1.5px solid var(--primary); }
+
+/* 每篇文章标题前一个方块记号，呼应 logo 的方格图标 */
+h2.entry-hint-parent::before {
+  content: "";
+  flex: none;
+  width: 10px;
+  height: 10px;
+  margin-top: 0.55em;
+  background: var(--accent-blue);
+}
+
+/* ---------- 粗墨线分节：呼应源站 .why / .setup 那种大段落顶部粗线 ---------- */
+
+.post-header,
+.page-header {
+  border-top: 1.5px solid var(--primary);
+  padding-top: 22px;
+}
 
 .entry-footer,
 .post-meta,
@@ -152,7 +184,7 @@ code, pre, .chroma,
 .searchbox input,
 details.toc {
   border-radius: 0;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--primary);
 }
 
 .post-tags a,
@@ -189,8 +221,9 @@ details.toc {
 .md-content img,
 .entry-cover img {
   border-radius: 0;
-  border: 1px solid var(--border);
 }
+
+.md-content img { border: 1.5px solid var(--primary); }
 
 .md-content .highlight:not(table),
 .md-content pre code {
@@ -218,7 +251,7 @@ details.toc {
 
 .searchResults li {
   border-radius: 0;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--primary);
 }
 
 .searchResults li:hover,
