@@ -1,260 +1,133 @@
 /*
- * 站点视觉主题：参照 github.com/COLDDCC/printable-graph 的"方格纸/工程图"风格
- * （方格纸背景、锐利直角、IBM Plex 字体族 + Anybody 展示字体、蓝/绿/红三色点缀）。
+ * 无障碍优先的极简风格，参照 adrianroselli.com 那一路个人博客的设计哲学：
+ * 内容优先、不做视觉装饰、链接必须能被一眼认出、键盘焦点必须清晰可见。
+ * 没有引入任何自定义网络字体——全部用系统自带字体，少一个外部请求，
+ * 也更快。
  *
- * 这是套在 PaperMod 默认样式之上的覆盖层（Hugo 会自动把这个目录下的 CSS
- * 拼接在主题样式之后），没有改动任何 themes/PaperMod/ 下的文件，
- * 以后升级主题也不会被覆盖掉。想再调配色，改下面的变量就行。
+ * 只覆盖浅色的 :root / [data-theme="light"]，深色模式沿用主题自带的默认
+ * 深色配色，不去动它——尊重访客系统本身的浅色/深色偏好，这也是无障碍
+ * 实践的一部分。
  */
 
-:root,
-:root[data-theme="light"],
-:root[data-theme="dark"] {
-  /* PaperMod 自带的变量，直接改这些就能重上色大半个站点 */
-  --theme: #E3E8EA;
+:root, :root[data-theme="light"] {
+  --theme: #FFFFFF;
   --entry: #FFFFFF;
-  --primary: #12171B;
-  --secondary: #5A666E;
-  --tertiary: #C3CDD2;
-  --content: #171D21;
-  --code-block-bg: #12171B;
-  --code-bg: #EBF0F2;
-  --border: #C3CDD2;
-  --radius: 0px;
+  --primary: #111111;
+  --secondary: #444444;
+  --tertiary: #CCCCCC;
+  --content: #1A1A1A;
+  --code-bg: #F2F2F2;
+  --border: #CCCCCC;
   color-scheme: light;
 
-  /* 自定义的三个点缀色 */
-  --accent-blue: #4A7FB5;
-  --accent-green: #5F8A6E;
-  --accent-red: #C4452F;
-
-  --font-display: 'Anybody', system-ui, sans-serif;
-  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --link: #0645AD;
+  --link-visited: #551A8B;
+  --focus-ring: #1A5FB4;
 }
 
-/* ---------- 全局：方格纸背景 + 字体 ---------- */
+/* 深色模式：链接/视觉焦点颜色单独给一套，不然在深色背景下 --link 这几个
+   变量是 undefined，链接会直接褪成正文一个颜色，只能靠下划线分辨——
+   下划线本身是够用的，但能保留颜色区分显然更好 */
+:root[data-theme="dark"] {
+  --link: #7DA6FF;
+  --link-visited: #C9A6FF;
+  --focus-ring: #7DA6FF;
+}
+
+/* 圆角、间距这些非配色的规则，浅色深色通用 */
+:root {
+  --radius: 3px;
+}
 
 body {
-  font-family: var(--font-body);
-  background-color: var(--theme);
-  /* 双层网格：5mm 一条细线，每 5 格（25mm）加一条粗一点的"整格"线，
-     跟 printable-graph 卖的方格纸产品（5mm/1cm 方格纸）呼应一下 */
-  background-image:
-    linear-gradient(to right, rgba(74, 127, 181, .32) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(74, 127, 181, .32) 1px, transparent 1px),
-    linear-gradient(to right, rgba(74, 127, 181, .16) .6px, transparent .6px),
-    linear-gradient(to bottom, rgba(74, 127, 181, .16) .6px, transparent .6px);
-  background-size: 25mm 25mm, 25mm 25mm, 5mm 5mm, 5mm 5mm;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6,
-.logo a,
-.post-title,
-.page-header h1,
-.entry-header h2,
-.first-entry .entry-header h1,
-.first-entry .entry-header h2 {
-  font-family: var(--font-display);
-  letter-spacing: -0.01em;
-}
+/* 主题自带的 .list{background:var(--code-bg)} 选择器优先级比单独的 body
+   标签选择器高，首页这类列表页会把背景改成浅灰——这里显式声明成跟其他
+   页面一样的纯白，两种页面背景才能保持一致（之前方格纸那版就在这里
+   踩过一次坑：背景改动只用 body 选择器写，首页压根没生效） */
+.list { background: var(--theme); }
 
-a { color: var(--accent-blue); }
-a:hover { color: var(--accent-red); }
-
+/* 键盘焦点：比主题默认的更粗更显眼，这是无障碍最基本也最容易被忽略的一条 */
 :focus-visible {
-  outline: 2px solid var(--accent-blue);
-  outline-offset: 2px;
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
 }
 
-::selection {
-  background: rgba(74, 127, 181, .28);
-}
-
-code, pre, .chroma,
-.md-content pre code,
-.post-content code {
-  font-family: var(--font-mono) !important;
-}
-
-/* ---------- 顶部导航：悬浮 + 毛玻璃 + 等宽大写菜单 ---------- */
-
-.header {
-  position: sticky;
+/* 跳转到正文的链接：默认藏在屏幕外，键盘 Tab 到它才会出现 */
+.skip-link {
+  position: absolute;
+  left: -9999px;
   top: 0;
-  z-index: 20;
-  border-bottom: 1px solid var(--tertiary);
-  background: rgba(227, 232, 234, .86);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-.logo a {
-  position: relative;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-}
-
-/* 一个小方格图标，呼应"方格纸"主题，纯 CSS 画的，不用额外图片 */
-.logo a::before {
-  content: "";
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  margin-inline-end: 2px;
-  background-color: var(--accent-blue);
-  background-image:
-    linear-gradient(to right, var(--theme) 1.5px, transparent 1.5px),
-    linear-gradient(to bottom, var(--theme) 1.5px, transparent 1.5px);
-  background-size: 50% 50%;
-}
-
-.menu a {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--secondary);
-}
-
-.menu a:hover { color: var(--accent-blue); }
-
-.menu .active {
-  color: var(--primary);
-  text-decoration-color: var(--accent-blue);
-}
-
-/* ---------- 文章列表卡片 ---------- */
-
-.post-entry {
-  border: 1.5px solid var(--primary);
-  transition: transform .2s ease, border-color .2s ease;
-}
-
-.post-entry:hover,
-.post-entry:focus-within {
-  border-color: var(--accent-blue);
-}
-
-/* entry-hint-parent 这个 class 直接打在 h2 上（display:flex，用来给"编辑/草稿"
-   提示腾位置），默认只有标题一个 flex item，justify-content:space-between
-   没有可见效果——但下面加了个 ::before 方块记号之后就变成两个 item 了，
-   要显式收拢到左边，不然标题会被挤到最右边 */
-h2.entry-hint-parent {
-  font-weight: 700;
-  justify-content: flex-start;
-  gap: 8px;
-}
-
-.entry-cover img { border: 1.5px solid var(--primary); }
-
-/* 每篇文章标题前一个方块记号，呼应 logo 的方格图标 */
-h2.entry-hint-parent::before {
-  content: "";
-  flex: none;
-  width: 10px;
-  height: 10px;
-  margin-top: 0.55em;
-  background: var(--accent-blue);
-}
-
-/* ---------- 粗墨线分节：呼应源站 .why / .setup 那种大段落顶部粗线 ---------- */
-
-.post-header,
-.page-header {
-  border-top: 1.5px solid var(--primary);
-  padding-top: 22px;
-}
-
-.entry-footer,
-.post-meta,
-.breadcrumbs {
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  letter-spacing: 0.02em;
-}
-
-/* ---------- 标签 / 分页 / 分享按钮：直角 + 等宽大写 ---------- */
-
-.post-tags a,
-.terms-tags a,
-.paginav,
-.share-buttons,
-.searchbox input,
-details.toc {
-  border-radius: 0;
-  border: 1.5px solid var(--primary);
-}
-
-.post-tags a,
-.terms-tags a {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  background: var(--entry);
-}
-
-.post-tags a:hover,
-.terms-tags a:hover {
-  border-color: var(--accent-blue);
-  color: var(--accent-blue);
-}
-
-.pagination a {
-  border-radius: 0;
-  font-family: var(--font-mono);
-  letter-spacing: 0.04em;
-  background: var(--primary);
-}
-
-.pagination a:hover { background: var(--accent-blue); }
-
-/* ---------- 正文排版 ---------- */
-
-.md-content blockquote {
-  border-inline-start: 3px solid var(--accent-red);
-  color: var(--secondary);
-}
-
-.md-content img,
-.entry-cover img {
-  border-radius: 0;
-}
-
-.md-content img { border: 1.5px solid var(--primary); }
-
-.md-content .highlight:not(table),
-.md-content pre code {
-  border-radius: 0;
-}
-
-/* ---------- 页脚 / 回到顶部 ---------- */
-
-.footer {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  letter-spacing: 0.02em;
-  border-top: 1px solid var(--tertiary);
-}
-
-.top-link {
-  border-radius: 0;
+  z-index: 999;
+  padding: 12px 20px;
   background: var(--primary);
   color: var(--theme);
+  font-weight: 700;
+  text-decoration: none;
+}
+.skip-link:focus {
+  left: 12px;
+  top: 12px;
 }
 
-.top-link:hover { background: var(--accent-blue); }
+/* 链接：颜色 + 下划线一起用，不只靠颜色区分——色弱访客也能识别 */
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+a:visited { color: var(--link-visited); }
+a:hover { text-decoration-thickness: 2px; }
 
-/* ---------- 搜索页 ---------- */
+.header {
+  border-bottom: 1px solid var(--tertiary);
+  background: var(--theme);
+}
+.logo a {
+  font-weight: 700;
+  text-decoration: none;
+}
+.menu a {
+  color: var(--secondary);
+  text-decoration: none;
+}
+.menu a:hover { text-decoration: underline; }
+.menu .active { text-decoration: underline; text-decoration-thickness: 2px; }
 
-.searchResults li {
+/* 文章列表：不做卡片，就是普通的文字列表 + 一条细线分隔，没有阴影、没有位移动画 */
+.post-entry {
+  border: none;
+  border-bottom: 1px solid var(--tertiary);
   border-radius: 0;
-  border: 1.5px solid var(--primary);
+  padding: 22px 0;
+  margin-bottom: 0;
+  transition: none;
 }
+.post-entry:hover, .post-entry:focus-within { transform: none; }
+.entry-cover { display: none; }
 
-.searchResults li:hover,
-.searchResults li:focus-within {
-  border-color: var(--accent-blue);
+.entry-hint-parent h2, h2.entry-hint-parent { font-weight: 700; }
+
+.post-tags a, .terms-tags a {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--secondary);
+  text-decoration: none;
 }
+.post-tags a:hover, .terms-tags a:hover { text-decoration: underline; }
+
+.pagination a { border-radius: var(--radius); }
+
+.md-content blockquote {
+  border-inline-start: 3px solid var(--tertiary);
+  color: var(--secondary);
+}
+.md-content img { border-radius: var(--radius); }
+
+.footer { border-top: 1px solid var(--tertiary); }
+.top-link { border-radius: var(--radius); }
+
+.searchResults li { border-radius: var(--radius); border: 1px solid var(--border); }

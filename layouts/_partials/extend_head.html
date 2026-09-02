@@ -1,6 +1,2 @@
-{{- /* 覆盖主题默认的 extend_head.html（主题里同名文件的官方自定义入口），
-       只用来引入自定义配色/字体需要的 Google Fonts。
-       字体和配色本体在 assets/css/extended/custom.css 里，会被主题自动打包进最终的 stylesheet。 */ -}}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anybody:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+{{- /* 无障碍优先的极简风格不引入任何自定义网络字体，全部用系统字体：
+       少一次外部字体请求，页面更快，也少一个第三方依赖。这里留空。 */ -}}
