@@ -121,7 +121,19 @@ a:visited { color: var(--link-visited); }
   color: var(--primary);
 }
 
-/* 首页文章列表：标题加粗 + 绿色粗下划线，不做卡片边框，靠间距和一条细线分隔 */
+/* 首页/归档文章列表：两栏网格，标题加粗 + 绿色粗下划线，不做卡片边框，
+   靠间距分隔。窄屏（.main 本身放不下两栏）就退回单栏 */
+.post-list-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 40px;
+  row-gap: 8px;
+}
+@media (min-width: 820px) {
+  .post-list-grid { grid-template-columns: 1fr 1fr; }
+}
+.post-list-grid > .first-entry { grid-column: 1 / -1; }
+
 .post-entry {
   border: none;
   border-bottom: 1px solid var(--tertiary);
@@ -131,7 +143,27 @@ a:visited { color: var(--link-visited); }
   transition: none;
 }
 .post-entry:hover, .post-entry:focus-within { transform: none; }
-.entry-cover { display: none; }
+
+/* 封面缩略图 + 元信息（日期/字数/Tagged）放一行，缩略图在左边，
+   没配封面图的文章这里就只有右边的 meta，不会露出空块 */
+.entry-preview-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 10px;
+}
+.entry-preview-row .entry-cover {
+  flex: none;
+  width: 96px;
+  margin: 0;
+}
+.entry-preview-row .entry-cover img {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+.entry-preview-row .entry-footer { flex: 1 1 auto; }
 
 h2.entry-hint-parent {
   font-weight: 700;

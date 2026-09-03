@@ -52,6 +52,7 @@
 {{- end }}
 
 {{- $term := .Data.Term }}
+<div class="post-list-grid">
 {{- range $index, $page := $paginator.Pages }}
 
 {{- $class := "post-entry" }}
@@ -64,8 +65,6 @@
 {{- end }}
 
 <article class="{{ $class }}">
-  {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
-  {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
   <header class="entry-header">
     <h2 class="entry-hint-parent">
       {{- .Title }}
@@ -84,17 +83,25 @@
     <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
   </div>
   {{- end }}
-  {{- if not (.Param "hideMeta") }}
-  <footer class="entry-footer">
-    {{- partial "post_meta.html" . -}}
-    {{- with .Params.tags }}
-    &nbsp;·&nbsp;<span class="entry-tagged"><em>Tagged:</em> {{ delimit . ", " }}.</span>
+  {{/* 封面缩略图 + 元信息放一行：封面在左，日期/字数/Tagged 在右，
+       照参考图那种排版来的。cover.html 在没有配封面图时什么都不渲染，
+       所以没配封面的文章这里就只显示右边的 footer，不会露出空块 */}}
+  <div class="entry-preview-row">
+    {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
+    {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+    {{- if not (.Param "hideMeta") }}
+    <footer class="entry-footer">
+      {{- partial "post_meta.html" . -}}
+      {{- with .Params.tags }}
+      &nbsp;·&nbsp;<span class="entry-tagged"><em>Tagged:</em> {{ delimit . ", " }}.</span>
+      {{- end }}
+    </footer>
     {{- end }}
-  </footer>
-  {{- end }}
+  </div>
   <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
 </article>
 {{- end }}
+</div>{{/* .post-list-grid */}}
 
 {{- if gt $paginator.TotalPages 1 }}
 <footer class="page-footer">

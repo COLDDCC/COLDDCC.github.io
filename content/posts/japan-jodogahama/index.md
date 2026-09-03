@@ -6,6 +6,11 @@ description: "岩手县宫古市·净土之滨旅行攻略：5200万年前火山
 summary: "去了那么多次日本，还是被净土之滨震撼到说不出话。白色流纹岩散落在蒂芙尼蓝的透明海里，300年前的和尚说这里「真像极乐净土」。"
 tags: ["日本旅行", "日本小众旅行"]
 categories: ["旅行"]
+cover:
+  image: "cover.svg"
+  alt: "白色岩石与松树的简笔插画，示意净土之滨"
+  relative: true
+  hiddenInSingle: true
 ShowToc: true
 TocOpen: false
 ---
