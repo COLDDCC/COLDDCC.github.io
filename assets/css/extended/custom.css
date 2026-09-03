@@ -1,55 +1,59 @@
 /*
- * 无障碍优先的极简风格，参照 adrianroselli.com 那一路个人博客的设计哲学：
- * 内容优先、不做视觉装饰、链接必须能被一眼认出、键盘焦点必须清晰可见。
- * 没有引入任何自定义网络字体——全部用系统自带字体，少一个外部请求，
- * 也更快。
+ * 视觉参照两个来源：
+ * 1. cassidoo.co（Cassidy Williams 的个人主页）—— 暖米色背景、全站等宽字体、
+ *    不做卡片装饰，链接靠颜色+下划线识别。这是整站的基调。
+ * 2. adrianroselli.com 首页的 "Latest Posts" 列表 —— 标题加粗、绿色粗下划线，
+ *    元信息里带 "Tagged: ..."。这个专门用在首页的文章列表上。
+ * 键盘可访问性那部分（skip link、加粗焦点框）是上一版就做的，跟这次的
+ * 配色调整没关系，原样保留。
  *
- * 只覆盖浅色的 :root / [data-theme="light"]，深色模式沿用主题自带的默认
- * 深色配色，不去动它——尊重访客系统本身的浅色/深色偏好，这也是无障碍
- * 实践的一部分。
+ * 没有引入任何自定义网络字体——全部用系统自带的等宽字体，少一个外部
+ * 请求，也不用担心某些网络环境下 Google Fonts 连不上。
  */
 
 :root, :root[data-theme="light"] {
-  --theme: #FFFFFF;
-  --entry: #FFFFFF;
-  --primary: #111111;
-  --secondary: #444444;
-  --tertiary: #CCCCCC;
+  --theme: #F7F1E8;
+  --entry: #F7F1E8;
+  --primary: #1A1A1A;
+  --secondary: #666666;
+  --tertiary: #DED4C3;
   --content: #1A1A1A;
-  --code-bg: #F2F2F2;
-  --border: #CCCCCC;
+  --code-bg: #EEE6D8;
+  --border: #DED4C3;
   color-scheme: light;
 
-  --link: #0645AD;
-  --link-visited: #551A8B;
-  --focus-ring: #1A5FB4;
+  --link: #2B6CB0;
+  --link-visited: #6B46C1;
+  --focus-ring: #2B6CB0;
+  --accent-green: #2E7D32;
 }
 
-/* 深色模式：链接/视觉焦点颜色单独给一套，不然在深色背景下 --link 这几个
-   变量是 undefined，链接会直接褪成正文一个颜色，只能靠下划线分辨——
-   下划线本身是够用的，但能保留颜色区分显然更好 */
+/* 深色模式：链接/视觉焦点颜色单独给一套，不然在深色背景下这几个变量是
+   undefined，链接会直接褪成正文一个颜色，只能靠下划线分辨 */
 :root[data-theme="dark"] {
   --link: #7DA6FF;
   --link-visited: #C9A6FF;
   --focus-ring: #7DA6FF;
+  --accent-green: #6FCF7A;
 }
 
 /* 圆角、间距这些非配色的规则，浅色深色通用 */
 :root {
-  --radius: 3px;
+  --radius: 2px;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono",
+    Menlo, Consolas, "Liberation Mono", monospace;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+body, h1, h2, h3, h4, h5, h6, button, input, .menu a {
+  font-family: var(--font-mono);
 }
 
 /* 主题自带的 .list{background:var(--code-bg)} 选择器优先级比单独的 body
-   标签选择器高，首页这类列表页会把背景改成浅灰——这里显式声明成跟其他
-   页面一样的纯白，两种页面背景才能保持一致（之前方格纸那版就在这里
-   踩过一次坑：背景改动只用 body 选择器写，首页压根没生效） */
+   标签选择器高，首页这类列表页会把背景压过去——显式把 .list 也带上，
+   两种页面背景才能保持一致（之前踩过的坑，这次别再漏掉） */
 .list { background: var(--theme); }
 
-/* 键盘焦点：比主题默认的更粗更显眼，这是无障碍最基本也最容易被忽略的一条 */
+/* 键盘焦点：比主题默认的更粗更显眼 */
 :focus-visible {
   outline: 3px solid var(--focus-ring);
   outline-offset: 3px;
@@ -72,14 +76,14 @@ body {
   top: 12px;
 }
 
-/* 链接：颜色 + 下划线一起用，不只靠颜色区分——色弱访客也能识别 */
+/* 链接：颜色 + 下划线一起用，不只靠颜色区分 */
 a {
   color: var(--link);
   text-decoration: underline;
+  text-decoration-thickness: 2px;
   text-underline-offset: 0.15em;
 }
 a:visited { color: var(--link-visited); }
-a:hover { text-decoration-thickness: 2px; }
 
 .header {
   border-bottom: 1px solid var(--tertiary);
@@ -93,22 +97,37 @@ a:hover { text-decoration-thickness: 2px; }
   color: var(--secondary);
   text-decoration: none;
 }
-.menu a:hover { text-decoration: underline; }
-.menu .active { text-decoration: underline; text-decoration-thickness: 2px; }
+.menu a:hover { text-decoration: underline; text-decoration-color: var(--accent-green); }
+.menu .active {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--accent-green);
+  color: var(--primary);
+}
 
-/* 文章列表：不做卡片，就是普通的文字列表 + 一条细线分隔，没有阴影、没有位移动画 */
+/* 首页文章列表：标题加粗 + 绿色粗下划线，不做卡片边框，靠间距和一条细线分隔 */
 .post-entry {
   border: none;
   border-bottom: 1px solid var(--tertiary);
   border-radius: 0;
-  padding: 22px 0;
+  padding: 24px 0;
   margin-bottom: 0;
   transition: none;
 }
 .post-entry:hover, .post-entry:focus-within { transform: none; }
 .entry-cover { display: none; }
 
-.entry-hint-parent h2, h2.entry-hint-parent { font-weight: 700; }
+h2.entry-hint-parent {
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--accent-green);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.2em;
+  display: inline;
+}
+
+/* "Tagged: ..." 那段是 layouts/_partials/list.html 里加的，这里只管样式 */
+.entry-tagged { font-style: italic; color: var(--secondary); }
 
 .post-tags a, .terms-tags a {
   border-radius: var(--radius);
