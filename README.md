@@ -159,23 +159,26 @@ push 到 `main` 分支之后，GitHub Actions 会自动：
 
 ## 5.5 只是想调配色/字体，不换主题
 
-现在这套无障碍优先的极简视觉（黑白配色、系统字体、链接始终带下划线、
-键盘焦点粗描边、跳到正文的 skip link）不是改主题本身，而是叠在 PaperMod
-默认样式上面的一层覆盖，在这几个文件里：
+现在这套视觉（暖米色背景、全站等宽字体、首页文章标题绿色下划线 +
+"Tagged: ..." 元信息、键盘焦点粗描边、跳到正文的 skip link）不是改主题
+本身，而是叠在 PaperMod 默认样式上面的一层覆盖，在这几个文件里：
 
-- `assets/css/extended/custom.css` —— 配色变量、圆角、链接/焦点样式，改这
-  个文件里最上面的 `:root` 变量最省事（`:root[data-theme="dark"]` 那段是
-  深色模式单独的链接颜色，别漏改）
+- `assets/css/extended/custom.css` —— 配色变量、圆角、字体、链接/焦点
+  样式，改这个文件里最上面的 `:root` 变量最省事（`:root[data-theme="dark"]`
+  那段是深色模式单独的链接颜色，别漏改）
 - `layouts/_partials/extend_head.html` —— 如果想加自定义网络字体（比如
-  Google Fonts），在这里加 `<link>`；现在是空的，用的是系统自带字体
-- `layouts/baseof.html` —— 页面整体骨架，目前只多了一行 skip link。这个
-  文件是从主题复制出来改的，**不是**新建的空文件，以后主题升级要留意这里
-  会不会有值得同步的新变化（概率很低，这个文件基本不怎么变）
+  Google Fonts），在这里加 `<link>`；现在是空的，用的是系统自带的等宽字体
+- `layouts/baseof.html` —— 页面整体骨架，目前只多了一行 skip link
+- `layouts/list.html` —— 首页/归档这类文章列表页的排版，"Tagged: ..." 那行
+  元信息是在这里加的
+
+`baseof.html` 和 `list.html` 都是从主题复制出来改的，**不是**新建的空
+文件，以后主题升级要留意这两个文件会不会有值得同步的新变化（概率不高，
+但比 `custom.css`/`extend_head.html` 这种全新文件更需要留意）。
 
 这几个文件都在仓库根目录，不在 `themes/PaperMod/` 里面，所以主题以后升级
-（重新复制一遍新版本的主题文件）也不会把这层样式覆盖掉，唯独 `baseof.html`
-因为是复制出来改的，主题升级后如果它有更新，需要手动比对一下要不要同步。
-改完照常 `hugo server -D` 本地看一眼、`git push` 就行。
+（重新复制一遍新版本的主题文件）也不会把这层样式覆盖掉。改完照常
+`hugo server -D` 本地看一眼、`git push` 就行。
 
 ---
 
@@ -190,9 +193,10 @@ push 到 `main` 分支之后，GitHub Actions 会自动：
 ├── content/archives.md            # 归档页
 ├── content/search.md              # 搜索页
 ├── static/                        # 直接原样发布的静态文件（favicon 等）
-├── assets/css/extended/custom.css # 样式覆盖层，改配色/圆角/链接样式在这
+├── assets/css/extended/custom.css # 样式覆盖层，改配色/圆角/字体/链接样式在这
 ├── layouts/_partials/extend_head.html  # 自定义网络字体入口，现在是空的
 ├── layouts/baseof.html            # 页面骨架，从主题复制出来改的（加了 skip link）
+├── layouts/list.html              # 文章列表排版，从主题复制出来改的（加了 Tagged 那行）
 └── themes/PaperMod/                # 主题文件，直接提交进仓库，不是 submodule
 ```
 
