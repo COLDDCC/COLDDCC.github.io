@@ -44,11 +44,25 @@
   --radius: 2px;
   --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono",
     Menlo, Consolas, "Liberation Mono", monospace;
+  /* 等宽字体是给拉丁字母设计的，中文没有"等宽"这个概念，硬套上去
+     浏览器只能拿系统默认中文字体顶替，字重、风格跟等宽字母对不上，
+     看着不协调。正文/标题走系统自带的中英文双语字体栈——本来就是
+     操作系统给中英混排调好的，天然协调 */
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
-body, h1, h2, h3, h4, h5, h6, button, input, .menu a {
-  font-family: var(--font-mono);
+/* 导航"文章/标签/归档"、标签"日本旅行"这些其实也是中文，跟等宽字体
+   一样会撞上"中文没有等宽"的问题——所以除了 code/pre 天然就是英文
+   代码的地方，其余统统走中英双语字体栈，不再到处混等宽 */
+body, h1, h2, h3, h4, h5, h6, .logo a, .menu a,
+.post-tags a, .terms-tags a, .entry-footer, .post-meta, .breadcrumbs {
+  font-family: var(--font-body);
 }
+
+/* "Tagged:" 这个词是我们自己加的纯英文标签，单独给它一点等宽字体的
+   打字机味道，呼应最初参考图里的排版细节 */
+.entry-tagged em { font-family: var(--font-mono); font-style: normal; }
 
 /* 主题自带的 .list{background:var(--code-bg)} 选择器优先级比单独的 body
    标签选择器高，首页这类列表页会把背景压过去——显式把 .list 也带上，
