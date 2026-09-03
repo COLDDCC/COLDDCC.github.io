@@ -7,10 +7,9 @@ summary: "日本去了不知道多少次，净土之滨还是让我愣在原地�
 tags: ["日本旅行", "日本小众旅行"]
 categories: ["旅行"]
 cover:
-  image: "cover.svg"
-  alt: "白色岩石与松树的简笔插画，示意净土之滨"
+  image: "cover.png"
+  alt: "净土之滨的白色流纹岩与蒂芙尼蓝海水"
   relative: true
-  hiddenInSingle: true
 ShowToc: true
 TocOpen: false
 ---
