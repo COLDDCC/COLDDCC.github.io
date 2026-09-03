@@ -12,14 +12,16 @@
  */
 
 :root, :root[data-theme="light"] {
-  --theme: #F7F1E8;
-  --entry: #F7F1E8;
+  /* 上一版 #F7F1E8 红色分量比绿色明显高一截，看着偏粉（"樱花粉"），
+     这版把 R/G 拉近、B 压低，让暖色调靠向黄褐色的"牛皮纸/燕麦"而不是粉 */
+  --theme: #F2EEDD;
+  --entry: #F2EEDD;
   --primary: #1A1A1A;
   --secondary: #666666;
-  --tertiary: #DED4C3;
+  --tertiary: #D8D0B8;
   --content: #1A1A1A;
-  --code-bg: #EEE6D8;
-  --border: #DED4C3;
+  --code-bg: #E9E3CC;
+  --border: #D8D0B8;
   color-scheme: light;
 
   --link: #2B6CB0;
