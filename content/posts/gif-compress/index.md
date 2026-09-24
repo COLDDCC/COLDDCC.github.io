@@ -3,6 +3,10 @@ title: "推荐一个 GIF 压缩工具：它真的一个字节都没往服务器�
 date: 2026-09-24T10:00:00+08:00
 draft: false
 tags: ["工具推荐", "前端", "网页性能"]
+cover:
+  image: "cover.png"
+  alt: "GIF Compress 首页截图：压缩示例 1.17 MB → 27 KB"
+  relative: true
 summary: "GIF Compress（gifcompressors.com）把 gifsicle 编译成 WebAssembly 跑在浏览器里，文件不需要上传。我扒了一下它的网络请求来验证这句话，顺便说清楚哪些场景不值得用。"
 ---
 
